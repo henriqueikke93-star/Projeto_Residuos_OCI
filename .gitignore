@@ -1,0 +1,7 @@
+*.csv
+*.parquet
+/processado/
+/raw/
+checkpoint/
+nohup.out
+*.log

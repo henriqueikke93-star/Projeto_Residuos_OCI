@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: painel-residuos
+  labels:
+    app: painel
+spec:
+  containers:
+  - name: streamlit
+    image: python:3.11-slim
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        pip install streamlit pandas
+        streamlit run /scripts/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+    - containerPort: 8501
+    volumeMounts:
+    - name: dados-volume
+      mountPath: /dados-residuos  # Onde o app vai ler os CSVs
+    - name: scripts-volume
+      mountPath: /scripts         # Onde está o seu app.py
+  volumes:
+  - name: dados-volume
+    persistentVolumeClaim:
+      claimName: spark-pvc
+  - name: scripts-volume
+    hostPath:
+      path: /dados-residuos/scripts # Caminho na sua VM onde está o app.py

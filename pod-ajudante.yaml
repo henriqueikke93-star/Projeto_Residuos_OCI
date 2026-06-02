@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ajudante
+spec:
+  containers:
+  - name: ajudante
+    image: alpine
+    command: ["/bin/sh", "-c", "tail -f /dev/null"]
+    volumeMounts:
+    - name: dados-volume
+      mountPath: /dados
+  volumes:
+  - name: dados-volume
+    persistentVolumeClaim:
+      claimName: spark-pvc
